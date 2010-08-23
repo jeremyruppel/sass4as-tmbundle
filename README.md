@@ -4,6 +4,5 @@ The Sass4as.tmbundle is a TextMate bundle with a language grammar to provide syn
 
 ## Installation
 
-> git clone git@github.com:jeremyruppel/sass4as-tmbundle.git Sass4as.tmbundle
-
-> mate Sass4as.tmbundle
+	git clone git@github.com:jeremyruppel/sass4as-tmbundle.git Sass4as.tmbundle
+	mate Sass4as.tmbundle
