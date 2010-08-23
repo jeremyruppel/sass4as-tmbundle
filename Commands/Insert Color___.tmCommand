@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+
+require ENV['TM_SUPPORT_PATH'] + "/lib/ui"
+require ENV['TM_SUPPORT_PATH'] + "/lib/exit_codes"
+color = STDIN.read
+
+if color.length &gt; 0 and color[0] != ?#
+  color.downcase!
+end
+
+color = TextMate::UI.request_color(color)
+
+unless color.nil?
+	
+	color.upcase!
+	if color.length == 3 
+	  color.gsub!(/(.)(.)(.)/,'\1\1\2\2\3\3')
+	end
+	print color
+
+else 
+
+	TextMate.exit_discard( )
+	
+end</string>
+	<key>fallbackInput</key>
+	<string>none</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>keyEquivalent</key>
+	<string>@C</string>
+	<key>name</key>
+	<string>Insert Color...</string>
+	<key>output</key>
+	<string>replaceSelectedText</string>
+	<key>scope</key>
+	<string>source.sass4as</string>
+	<key>uuid</key>
+	<string>58E899DF-56AD-41E4-AF8D-6D23B9D0066C</string>
+</dict>
+</plist>

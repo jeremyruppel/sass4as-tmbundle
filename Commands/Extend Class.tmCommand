@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+
+require ENV['TM_SUPPORT_PATH'] + "/lib/ui"
+
+class Object
+  def pass
+    yield self if block_given?
+  end
+end
+
+STDIN.readlines[ 0, ENV[ 'TM_LINE_NUMBER' ].to_i ].select { |line| line[ /^[a-zA-Z0-9\-]+/ ] }.pass do |s|
+  # don't offer the current symbol
+  s[ 0, s.size - 1 ].sort.pass do |symbols|
+    # let the user choose a symbol to extend
+    TextMate::UI.menu( symbols ).pass do |choice|
+      unless choice.nil?
+        puts "@extend #{symbols[ choice ]}"
+      end
+    end
+  end
+end
+
+</string>
+	<key>input</key>
+	<string>document</string>
+	<key>name</key>
+	<string>Extend Class</string>
+	<key>output</key>
+	<string>insertAsSnippet</string>
+	<key>scope</key>
+	<string>source.sass4as</string>
+	<key>tabTrigger</key>
+	<string>@</string>
+	<key>uuid</key>
+	<string>A1A90E2E-F82F-4681-A2A8-18EC4DDDF1A4</string>
+</dict>
+</plist>

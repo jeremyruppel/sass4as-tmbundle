@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+
+require ENV['TM_SUPPORT_PATH'] + "/lib/ui"
+require ENV['TM_SUPPORT_PATH'] + "/lib/exit_codes"
+
+class Object
+  def pass
+    yield self if block_given?
+  end
+end
+
+v = /^(\$[a-zA-Z0-9\-]+): ?(.*)/
+
+STDIN.readlines[ 0, ENV[ 'TM_LINE_NUMBER' ].to_i ].select { |line| 
+  line[ v ] 
+}.map { |m|
+  { 'title' =&gt; m[ v, 1 ], 'data' =&gt; m[ v, 2 ] }
+}.pass do |s|
+  case s.size
+  when 0
+    TextMate.exit_show_tool_tip "No variables declared before cursor in document."
+  when 1
+    print s[ 0 ][ 'title' ]
+  else
+    TextMate::UI.menu( s ).pass do |choice|
+      unless choice.nil?
+        print choice[ 'title' ]
+      end
+    end
+  end
+end</string>
+	<key>input</key>
+	<string>document</string>
+	<key>name</key>
+	<string>List Variables</string>
+	<key>output</key>
+	<string>afterSelectedText</string>
+	<key>scope</key>
+	<string>source.sass4as</string>
+	<key>tabTrigger</key>
+	<string>$</string>
+	<key>uuid</key>
+	<string>7E854E2B-6BC2-4C57-9FE5-8C91B74B0300</string>
+</dict>
+</plist>
